@@ -69,7 +69,11 @@ def update_links_list(modules):
 def download_file(link):
     file_name = link.split("/")[-1]
     module_name = file_name.split(".")[5]
+    
+    print "Downloading {} ...".format(file_name)
+
     filename = wget.download(link, "./downloads/{}/{}".format(module_name,file_name))
+    #os.system( "rm ./downloads/{}/{}".format(module_name,file_name) )
     return True
     
 
@@ -77,17 +81,21 @@ def download_file(link):
 
 def main():
     module_names = map( (lambda x: x.split(".")[0] ),os.listdir("./download_links"))   
-    #make_module_folders(module_names)    
-    #copy_relevant_files(path, module_names)
+    
     update_links_list(module_names)
+    
     list_to_download = open("./download_links/{}.txt".format(module_names[MODULE_FILES_TO_DOWNLOAD])).read().split("\n")
     list_to_download = filter(lambda x: x!= '', list_to_download)
 
     
-    p = Pool(5)
+    #p = Pool(8)
 
-    print p.map(download_file, list_to_download)
+    #print p.map(download_file, list_to_download)
+    for x in range(0,len(list_to_download), 11):
+        
     
+    #print len(list_to_download)
+            
 
     #download_file('http://data.caida.org/datasets/topology/ark/ipv4/probe-data/team-1/2017/cycle-20171121/daily.l7.t1.c006153.20171122.sin-sg.warts.gz')
 
